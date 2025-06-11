@@ -26,7 +26,6 @@ Bash
 git clone https://github.com/kazmight/Turnkey-Auto-TX.git
 cd Turnkey-Auto-TX
 ```
-Bash
 
 ## 2. Instal Dependensi
 Jalankan perintah berikut di terminal Anda untuk menginstal semua pustaka yang diperlukan:
