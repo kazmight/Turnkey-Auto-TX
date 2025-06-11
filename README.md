@@ -21,16 +21,14 @@ Ikuti langkah-langkah di bawah ini untuk menyiapkan dan menjalankan skrip:
 
 ## 1. Klon Repositori (Jika Ada) atau Buat Proyek Baru
 Jika Anda memiliki repositori Git, klon:
-```
-Bash
+```Bash
 git clone https://github.com/kazmight/Turnkey-Auto-TX.git
 cd Turnkey-Auto-TX
 ```
 
 ## 2. Instal Dependensi
 Jalankan perintah berikut di terminal Anda untuk menginstal semua pustaka yang diperlukan:
-```
-Bash
+```Bash
 npm install web3 dotenv inquirer chalk
 ```
 ## 3. Siapkan File Konfigurasi
@@ -57,8 +55,7 @@ Pastikan tidak ada baris kosong atau spasi ekstra yang tidak diinginkan di dalam
 
 ## 4. Jalankan Skrip
 Setelah semua dependensi terinstal dan file konfigurasi disiapkan, jalankan skrip dari terminal Anda:
-```
-Bash
+```Bash
 node index.js
 ```
 Anda akan diminta untuk memasukkan jumlah transaksi yang ingin Anda jalankan.
