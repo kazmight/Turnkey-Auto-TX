@@ -58,6 +58,24 @@ Setelah semua dependensi terinstal dan file konfigurasi disiapkan, jalankan skri
 ```Bash
 node index.js
 ```
+🔒 Fitur Password (Keamanan)
+Untuk menjaga keamanan skrip Anda dan memastikan hanya pengguna yang sah yang dapat menjalankannya, skrip ini dilengkapi dengan sistem otentikasi password sederhana.
+
+Password Tersembunyi: Password Anda tidak disimpan langsung di dalam kode skrip. Sebaliknya, ia dibaca dari file .env Anda, yang harus dijaga kerahasiaannya.
+Input Tersembunyi di Konsol: Saat Anda diminta untuk memasukkan password, input Anda akan sepenuhnya tersembunyi (tidak ada karakter yang muncul di konsol saat Anda mengetik), mencegah orang lain melihatnya.
+Otentikasi Wajib: Skrip tidak akan melanjutkan eksekusi ke langkah-langkah transfer token sampai password yang benar dimasukkan.
+Cara Mengatur Password Anda:
+Buka atau buat file .env di direktori utama proyek Anda.
+
+Tambahkan baris berikut ke dalam file .env:
+
+SCRIPT_PASSWORD=your_secret_password_here
+Ganti your_secret_password_here dengan password pilihan Anda (misalnya, kazmight).
+
+## Untuk password silahkan Join Channel Dasar Pemulung: https://t.me/dasarpemulung
+
+Jalankan skrip: Saat Anda menjalankan node index.js, Anda akan diminta untuk memasukkan password ini.
+
 Anda akan diminta untuk memasukkan jumlah transaksi yang ingin Anda jalankan.
 Kemudian, masukkan delay (jeda) dalam detik antara setiap transaksi.
 Terakhir, tentukan jumlah Sepolia ETH yang ingin Anda kirim per transaksi.
@@ -69,4 +87,4 @@ RPC Endpoint: Secara default, skrip menggunakan https://rpc.sepolia.org. Jika An
 Biaya Gas: Biaya gas dapat berfluktuasi di jaringan Ethereum. Skrip akan mengambil harga gas saat ini, tetapi perlu diingat bahwa biaya total transaksi bisa bervariasi.
 
 
-## Script By Kazmight -  Join Channel Dasar Pemulung: https://t.me/dasarpemulung
+## Script By Kazmight 
