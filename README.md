@@ -61,16 +61,9 @@ node index.js
 🔒 Fitur Password (Keamanan)
 Untuk menjaga keamanan skrip Anda dan memastikan hanya pengguna yang sah yang dapat menjalankannya, skrip ini dilengkapi dengan sistem otentikasi password sederhana.
 
-Password Tersembunyi: Password Anda tidak disimpan langsung di dalam kode skrip. Sebaliknya, ia dibaca dari file .env Anda, yang harus dijaga kerahasiaannya.
+
 Input Tersembunyi di Konsol: Saat Anda diminta untuk memasukkan password, input Anda akan sepenuhnya tersembunyi (tidak ada karakter yang muncul di konsol saat Anda mengetik), mencegah orang lain melihatnya.
 Otentikasi Wajib: Skrip tidak akan melanjutkan eksekusi ke langkah-langkah transfer token sampai password yang benar dimasukkan.
-Cara Mengatur Password Anda:
-Buka atau buat file .env di direktori utama proyek Anda.
-
-Tambahkan baris berikut ke dalam file .env:
-
-SCRIPT_PASSWORD=your_secret_password_here
-Ganti your_secret_password_here dengan password pilihan Anda (misalnya, kazmight).
 
 ## Untuk password silahkan Join Channel Dasar Pemulung: https://t.me/dasarpemulung
 
