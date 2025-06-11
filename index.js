@@ -1,121 +1,146 @@
-const Web3 = require('web3');
+const { Web3 } = require('web3'); 
 const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
 const inquirer = require('inquirer');
-const chalk = require('chalk'); // Import chalk
 
-// Load environment variables from .env file
+
+let chalk; 
+
+
 dotenv.config();
 
-// Sepolia Etherscan base URL for transaction links
+
 const ETHERSCAN_BASE_URL = 'https://sepolia.etherscan.io/tx/';
 
-// Console Banner
+
 function printBanner() {
-    console.log(chalk.magenta(`
+    
+    console.log(chalk.hex('#FF00FF')(`
 ████████╗██╗░░░██╗██████╗░███╗░░██╗██╗░░██╗███████╗██╗░░░██╗
 ╚══██╔══╝██║░░░██║██╔══██╗████╗░██║██║░██╔╝██╔════╝╚██╗░██╔╝
 ░░░██║░░░██║░░░██║██████╔╝██╔██╗██║█████═╝░█████╗░░░╚████╔╝░
 ░░░██║░░░██║░░░██║██╔══██╗██║╚████║██╔═██╗░██╔══╝░░░░╚██╔╝░░
 ░░░██║░░░╚██████╔╝██║░░██║██║░╚███║██║░╚██╗███████╗░░░██║░░░
 ░░░╚═╝░░░░╚═════╝░╚═╝░░╚═╝╚═╝░░╚══╝╚═╝░░╚═╝╚══════╝░░░╚═╝░░░
-                Scricpt By Kazmight
-            Join Channel Dasar pemulung
+            Scricpt By Kazmight
+        Join Channel Dasar pemulung
     `));
-   
-// Function to read wallets from wallet.txt
+    
+    console.log(chalk.hex('#00FFFF')('------------------------------------------'));
+    console.log(chalk.hex('#00FFFF')('Turnkey Token Auto Transfer'));
+    console.log(chalk.hex('#00FFFF')('------------------------------------------\n'));
+}
+
+
 function readWallets(filePath) {
     try {
         const data = fs.readFileSync(filePath, 'utf8');
         return data.split('\n').map(addr => addr.trim()).filter(addr => addr.length > 0);
     } catch (error) {
-        console.error(chalk.red(`Error reading wallet.txt: ${error.message}`));
+        
+        console.error(chalk.hex('#FF0000')(`Error reading wallet.txt: ${error.message}`));
         process.exit(1);
     }
 }
 
 async function main() {
+    
+    chalk = (await import('chalk')).default;
+
+    
+    const prompt = inquirer.createPromptModule();
+
     printBanner();
 
     const privateKeys = [];
-    // Read private keys from .env
+    
     for (let i = 1; ; i++) {
         const pkVar = `PRIVATE_KEY_${i}`;
         const privateKey = process.env[pkVar];
         if (!privateKey) {
             if (i === 1) {
-                console.error(chalk.red('Error: No PRIVATE_KEY_1 found in .env. Please set at least one private key.'));
+                
+                console.error(chalk.hex('#FF0000')('Error: No PRIVATE_KEY_1 found in .env. Please set at least one private key.'));
                 process.exit(1);
             }
-            break; // No more private keys
+            break; // 
         }
         privateKeys.push(privateKey);
     }
 
     if (privateKeys.length === 0) {
-        console.error(chalk.red('No private keys found in .env. Please ensure PRIVATE_KEY_1, PRIVATE_KEY_2, etc., are set.'));
+        
+        console.error(chalk.hex('#FF0000')('No private keys found in .env. Please ensure PRIVATE_KEY_1, PRIVATE_KEY_2, etc., are set.'));
         process.exit(1);
     }
 
-    console.log(chalk.blue(`Found ${privateKeys.length} sender account(s) from .env.`));
+    
+    console.log(chalk.hex('#0000FF')(`Found ${privateKeys.length} sender account(s) from .env.`));
 
-    // Sepolia RPC URL (you can replace with your preferred provider, e.g., Infura, Alchemy)
-    const sepoliaRpcUrl = 'https://rpc.sepolia.org'; // Or use your own RPC endpoint
+    
+    const sepoliaRpcUrl = 'https://eth-sepolia.public.blastapi.io'; 
     const web3 = new Web3(sepoliaRpcUrl);
 
-    // Read recipient wallets
+    
     const recipientWalletsPath = path.join(__dirname, 'wallet.txt');
     const recipientWallets = readWallets(recipientWalletsPath);
 
     if (recipientWallets.length === 0) {
-        console.error(chalk.red('No recipient wallets found in wallet.txt. Please add recipient addresses.'));
+        
+        console.error(chalk.hex('#FF0000')('No recipient wallets found in wallet.txt. Please add recipient addresses.'));
         process.exit(1);
     }
-    console.log(chalk.blue(`Found ${recipientWallets.length} recipient wallet(s) in wallet.txt.`));
+    
+    console.log(chalk.hex('#0000FF')(`Found ${recipientWallets.length} recipient wallet(s) in wallet.txt.`));
 
-    // Get user input for number of transactions
-    const { numTransactions } = await inquirer.prompt([
+    
+    const { numTransactions } = await prompt([
         {
             type: 'input',
             name: 'numTransactions',
-            message: chalk.blue('How many transactions do you want to run (e.g., 1-100)?'),
+            
+            message: chalk.hex('#0000FF')('How many transactions do you want to run (e.g., 1-100)?'),
             validate: input => {
                 const num = parseInt(input);
                 if (isNaN(num) || num < 1) {
-                    return chalk.red('Please enter a valid number greater than or equal to 1.');
+                    
+                    return chalk.hex('#FF0000')('Please enter a valid number greater than or equal to 1.');
                 }
                 return true;
             }
         }
     ]);
 
-    // Get user input for delay
-    const { delaySeconds } = await inquirer.prompt([
+    
+    const { delaySeconds } = await prompt([
         {
             type: 'input',
             name: 'delaySeconds',
-            message: chalk.blue('Enter delay between transactions in seconds (e.g., 5 for 5 seconds):'),
+            
+            message: chalk.hex('#0000FF')('Enter delay between transactions in seconds (e.g., 5 for 5 seconds):'),
             validate: input => {
                 const num = parseInt(input);
                 if (isNaN(num) || num < 0) {
-                    return chalk.red('Please enter a valid number greater than or equal to 0.');
+                    // Red for invalid input
+                    return chalk.hex('#FF0000')('Please enter a valid number greater than or equal to 0.');
                 }
                 return true;
             }
         }
     ]);
 
-    // Get user input for amount to send
-    const { amountToSendEther } = await inquirer.prompt([
+    
+    const { amountToSendEther } = await prompt([
         {
             type: 'input',
             name: 'amountToSendEther',
-            message: chalk.blue('Enter the amount of Sepolia ETH to send per transaction (e.g., 0.001):'),
+            
+            message: chalk.hex('#0000FF')('Enter the amount of Sepolia ETH to send per transaction (e.g., 0.001):'),
             validate: input => {
                 const num = parseFloat(input);
                 if (isNaN(num) || num <= 0) {
-                    return chalk.red('Please enter a valid amount greater than 0.');
+                    return chalk.hex('#FF0000')('Please enter a valid amount greater than 0.');
                 }
                 return true;
             }
@@ -124,8 +149,9 @@ async function main() {
 
     const amountToSendWei = web3.utils.toWei(amountToSendEther, 'ether');
 
-    console.log(chalk.blue(`\nStarting ${numTransactions} transaction(s) with ${delaySeconds} seconds delay...`));
-    console.log(chalk.blue(`Amount to send per transaction: ${amountToSendEther} Sepolia ETH`));
+    
+    console.log(chalk.hex('#0000FF')(`\nStarting ${numTransactions} transaction(s) with ${delaySeconds} seconds delay...`));
+    console.log(chalk.hex('#0000FF')(`Amount to send per transaction: ${amountToSendEther} Sepolia ETH`));
 
     let transactionCount = 0;
     while (transactionCount < parseInt(numTransactions)) {
@@ -134,32 +160,41 @@ async function main() {
 
             const privateKey = privateKeys[i];
             const senderAccount = web3.eth.accounts.privateKeyToAccount(privateKey);
-            web3.eth.accounts.wallet.add(senderAccount);
+            
+            
+            if (!web3.eth.accounts.wallet[senderAccount.address]) {
+                web3.eth.accounts.wallet.add(senderAccount);
+            }
+            
+
             const senderAddress = senderAccount.address;
 
             const recipientAddress = recipientWallets[transactionCount % recipientWallets.length];
 
-            console.log(chalk.blue(`\n--- Transaction ${transactionCount + 1} ---`));
-            console.log(chalk.blue(`Sender: ${senderAddress}`));
+            
+            console.log(chalk.hex('#0000FF')(`\n--- Transaction ${transactionCount + 1} ---`));
+            console.log(chalk.hex('#0000FF')(`Sender: ${senderAddress}`));
 
             try {
-                // Get sender's balance
+                
                 const senderBalanceWei = await web3.eth.getBalance(senderAddress);
                 const senderBalanceEther = web3.utils.fromWei(senderBalanceWei, 'ether');
-                console.log(chalk.yellow(`Sender Balance: ${senderBalanceEther} Sepolia ETH`));
+                // Yellow for sender balance
+                console.log(chalk.hex('#FFFF00')(`Sender Balance: ${senderBalanceEther} Sepolia ETH`));
 
-                console.log(chalk.blue(`Recipient: ${recipientAddress}`));
-                console.log(chalk.blue(`Amount: ${amountToSendEther} Sepolia ETH`));
+                
+                console.log(chalk.hex('#0000FF')(`Recipient: ${recipientAddress}`));
+                console.log(chalk.hex('#0000FF')(`Amount: ${amountToSendEther} Sepolia ETH`));
 
-                // Get gas price
+                
                 const gasPrice = await web3.eth.getGasPrice();
-                console.log(chalk.blue(`Current Gas Price: ${web3.utils.fromWei(gasPrice, 'gwei')} Gwei`));
+                console.log(chalk.hex('#0000FF')(`Current Gas Price: ${web3.utils.fromWei(gasPrice, 'gwei')} Gwei`));
 
-                // Estimate gas limit
+                
                 const gasLimit = 21000;
-                console.log(chalk.blue(`Estimated Gas Limit: ${gasLimit}`));
+                console.log(chalk.hex('#0000FF')(`Estimated Gas Limit: ${gasLimit}`));
 
-                // Check if sender has enough funds
+                
                 const totalCostWei = BigInt(amountToSendWei) + (BigInt(gasPrice) * BigInt(gasLimit));
                 if (BigInt(senderBalanceWei) < totalCostWei) {
                     throw new Error(`Insufficient funds. Required: ${web3.utils.fromWei(totalCostWei.toString(), 'ether')} Sepolia ETH, Have: ${senderBalanceEther} Sepolia ETH`);
@@ -177,29 +212,31 @@ async function main() {
                 const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
 
                 const txLink = `${ETHERSCAN_BASE_URL}${receipt.transactionHash}`;
-                console.log(chalk.green(`Transaction successful! Hash: ${receipt.transactionHash}`));
-                console.log(chalk.green(`Tx Link: ${txLink}`));
-                console.log(chalk.green(`Block Number: ${receipt.blockNumber}`));
+                
+                console.log(chalk.hex('#00FF00')(`Transaction successful! Hash: ${receipt.transactionHash}`));
+                console.log(chalk.hex('#00FF00')(`Tx Link: ${txLink}`));
+                console.log(chalk.hex('#00FF00')(`Block Number: ${receipt.blockNumber}`));
 
                 transactionCount++;
 
             } catch (error) {
-                console.error(chalk.red(`Error in transaction ${transactionCount + 1}: ${error.message}`));
+                
+                console.error(chalk.hex('#FF0000')(`Error in transaction ${transactionCount + 1}: ${error.message}`));
                 if (error.message.includes('insufficient funds')) {
-                    console.error(chalk.red(`Sender ${senderAddress} has insufficient funds for this transaction.`));
+                    console.error(chalk.hex('#FF0000')(`Sender ${senderAddress} has insufficient funds for this transaction.`));
                 }
-                // Decide whether to continue or stop on error.
-                // For now, we'll continue to the next sender/transaction.
             }
 
             if (transactionCount < parseInt(numTransactions)) {
-                console.log(chalk.blue(`Waiting for ${delaySeconds} seconds before next transaction...`));
+                
+                console.log(chalk.hex('#0000FF')(`Waiting for ${delaySeconds} seconds before next transaction...`));
                 await new Promise(resolve => setTimeout(resolve, delaySeconds * 1000));
             }
         }
     }
 
-    console.log(chalk.green('\nAll requested transactions completed!'));
+    
+    console.log(chalk.hex('#00FF00')('\nAll requested transactions completed!'));
 }
 
 main();
