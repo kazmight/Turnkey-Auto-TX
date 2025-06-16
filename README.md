@@ -38,10 +38,8 @@ Buat file bernama .env dan masukkan private key akun pengirim Anda. Anda bisa me
 
 ## Contoh .env:
 
-PRIVATE_KEY_1=0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0
-PRIVATE_KEY_2=0xfedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210
-# Tambahkan PRIVATE_KEY_3, PRIVATE_KEY_4, dst. sesuai kebutuhan
-Penting: Ganti 0x... dengan private key asli Anda. JANGAN PERNAH membagikan file .env ini atau mengunggahnya ke repositori publik seperti GitHub.
+PRIVATE_KEY=0x123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0
+
 
 ## b. wallet.txt (Untuk Alamat Wallet Penerima)
 Buat file bernama wallet.txt dan daftar semua alamat wallet penerima, satu alamat per baris.
